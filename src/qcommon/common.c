@@ -37,7 +37,7 @@ If you have questions concerning this license or the applicable additional terms
 #include <netinet/in.h>
 // getpid
 #include <unistd.h>
-#elif __MACOS__
+#elif defined( __MACOS__ ) || defined( __OpenBSD__ )
 // getpid
 #include <unistd.h>
 #else
@@ -2730,9 +2730,7 @@ void Com_Init( char *commandLine ) {
 	// bani: init pid
 #ifdef _WIN32
 	pid = GetCurrentProcessId();
-#elif __linux__
-	pid = getpid();
-#elif __MACOS__
+#elif defined( __unix__ )
 	pid = getpid();
 #endif
 	s = va( "%d", pid );
@@ -3290,7 +3288,7 @@ void Com_Shutdown( qboolean badProfile ) {
 	}
 }
 
-#if !( defined __linux__ || defined __FreeBSD__ )  // r010123 - include FreeBSD
+#if !( defined __linux__ || defined __FreeBSD__ || defined __OpenBSD__ )  // r010123 - include FreeBSD
 #if ( ( !id386 ) && ( !defined __i386__ ) || __GNUC__ ) // rcg010212 - for PPC
 
 void Com_Memcpy( void* dest, const void* src, const size_t count ) {

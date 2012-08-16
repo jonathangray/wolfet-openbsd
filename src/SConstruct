@@ -153,6 +153,8 @@ if gcc_is_mingw():
 	g_os = 'win32'
 elif OS == 'Darwin':
 	g_os = 'Darwin'
+elif OS == 'OpenBSD':
+	g_os = 'OpenBSD'
 else:
 	g_os = 'Linux'
 print 'OS: %s' % g_os
@@ -232,6 +234,10 @@ if ( OS == 'Darwin' ):
 	BASECPPFLAGS += [ '-D__MACOS__', '-Wno-long-double', '-Wno-unknown-pragmas', '-Wno-trigraphs', '-fpascal-strings', '-fasm-blocks', '-Wreturn-type', '-Wunused-variable', '-ffast-math', '-fno-unsafe-math-optimizations', '-fvisibility=hidden', '-mmacosx-version-min=10.4', '-isysroot', '/Developer/SDKs/MacOSX10.4u.sdk' ]
 	BASECPPFLAGS += [ '-arch', 'i386' ]
 	BASELINKFLAGS += [ '-arch', 'i386' ]
+
+if ( OS == 'OpenBSD' ):
+	CORECPPPATH.append( '/usr/X11R6/include' )
+	CORECPPPATH.append( '/usr/local/include' )
 
 BASECPPFLAGS.append( '-pipe' )
 # warn all
@@ -316,7 +322,7 @@ if g_os == 'win32' and os.name != 'nt':
 toplevel_targets = []
 
 # build curl if needed
-if ( TARGET_CORE == '1' and DEDICATED != '1' and OS != 'Darwin' ):
+if ( TARGET_CORE == '1' and DEDICATED != '1' and OS != 'Darwin' and OS != 'OpenBSD' ):
 	# 1: debug, 2: release
 	if ( BUILD == 'release' ):
 		local_curl = 2

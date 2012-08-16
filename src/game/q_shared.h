@@ -262,6 +262,26 @@ void Sys_PumpEvents( void );
 
 #endif
 
+//======================= OPENBSD DEFINES =================================
+
+// the mac compiler can't handle >32k of locals, so we
+// just waste space and make big arrays static...
+#ifdef __OpenBSD__
+
+#define MAC_STATIC
+
+#ifdef __i386__
+#define CPUSTRING   "openbsd-i386"
+#elif defined __amd64__
+#define CPUSTRING   "openbsd-amd64"
+#else
+#define CPUSTRING   "openbsd-other"
+#endif
+
+#define PATH_SEP '/'
+
+#endif
+
 //=============================================================
 
 
@@ -421,7 +441,7 @@ void *Hunk_AllocDebug( int size, ha_pref preference, char *label, char *file, in
 void *Hunk_Alloc( int size, ha_pref preference );
 #endif
 
-#ifdef __linux__
+#if defined( __linux__ ) || defined( __OpenBSD__ )
 // show_bug.cgi?id=371
 // custom Snd_Memset implementation for glibc memset bug workaround
 void Snd_Memset( void* dest, const int val, const size_t count );
@@ -597,7 +617,7 @@ float Q_rsqrt( float f );       // reciprocal square root
 #define SQRTFAST( x ) ( 1.0f / Q_rsqrt( x ) )
 
 // fast float to int conversion
-#if id386 && !( ( defined __linux__ || defined __FreeBSD__ || defined __GNUC__ ) && ( defined __i386__ ) ) // rb010123
+#if id386 && !( ( defined __linux__ || defined __FreeBSD__ || defined __OpenBSD__ || defined __GNUC__ ) && ( defined __i386__ ) ) // rb010123
 long myftol( float f );
 #elif defined( __MACOS__ )
 #define myftol( x ) (long)( x )

@@ -163,6 +163,12 @@ linux_full_sources = [
 #        'unix/snd_mixa.S'
 ]
 
+openbsd_full_sources = [
+        'unix/linux_glimp.c',
+        'unix/linux_qgl.c',
+        'unix/linux_snd.c',
+]
+
 mac_sources = [
 	'game/q_shared.c',
 	'game/q_math.c',
@@ -261,6 +267,18 @@ if ( g_os == 'Linux' ):
 	matha = gas_env.StaticObject( 'unix/matha.spp' )
         snd_mixa = gas_env.StaticObject( 'unix/snd_mixa.spp' )
 
+if ( g_os == 'OpenBSD' ):
+	nasm_env = Environment( tools = [ 'nasm' ] )
+	nasm_env['ASFLAGS'] = '-f elf'
+	snapvector = nasm_env.StaticObject( 'unix/snapvector.asm' )
+
+	# gas assembly, with preprocessing
+	gas_env = Environment( tools = [ 'gcc', 'gas' ] )
+	gas_env.Append( CPPDEFINES = [ 'ELF' ] )
+	gas_env.Append( ASFLAGS = [ '-x', 'assembler-with-cpp' ] )
+	matha = gas_env.StaticObject( 'unix/matha.spp' )
+        snd_mixa = gas_env.StaticObject( 'unix/snd_mixa.spp' )
+
 splines_env = g_env.Clone()
 splines_lib = splines_env.StaticLibrary( splines_list )
 
@@ -281,6 +299,19 @@ if ( g_os == 'Linux' ):
 	else:
 		local_env['ENV']['CC'] = g_env['CC']
 		local_env['LINK'] = 'unix/staticlinkcpp.sh'
+elif ( g_os == 'OpenBSD' ):
+	if ( local_dedicated == 0 ):
+		local_env.Append( LIBS = [ 'X11', 'Xext', 'm' ] )
+		local_env.Append( LIBPATH = [ '/usr/X11R6/lib' ] )
+		local_env.Append( LIBPATH = [ '/usr/local/lib' ] )
+		local_env.Append( LIBS = [ 'curl', 'ossaudio' ] )
+	else:
+		local_env.Append( CPPDEFINES = [ 'DEDICATED' ] )
+		local_env.Append( LIBS = [ 'm' ] )
+
+	local_env['ENV']['CC'] = g_env['CC']
+	local_env['LINK'] = g_env['CXX']
+
 elif ( g_os == 'win32' ):
 	local_env.Append( LIBS = [ 'm', 'winmm', 'wsock32', 'gdi32', 'ole32', 'iphlpapi' ] )
 	if ( local_dedicated == 0 ):
@@ -297,6 +328,8 @@ if ( MASTER != '' ):
 
 source_list = server_list + qcommon_list
 if ( g_os == 'Linux' ):
+	source_list += linux_sources + snapvector + matha
+elif ( g_os == 'OpenBSD' ):
 	source_list += linux_sources + snapvector + matha
 elif ( g_os == 'win32' ):
 	source_list += win32_sources
@@ -321,6 +354,10 @@ if ( local_dedicated == 0 ):
 	if ( g_os == 'Linux' ):
 		source_list += snd_mixa
 		source_list += linux_full_sources
+		source_list += staticx11_libs
+	if ( g_os == 'OpenBSD' ):
+		source_list += snd_mixa
+		source_list += openbsd_full_sources
 		source_list += staticx11_libs
 	if ( g_os == 'win32' ):
 		source_list += win32_full_sources

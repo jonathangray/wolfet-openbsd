@@ -2458,7 +2458,7 @@ void R_SetColorMappings( void ) {
 		ri.Cvar_Set( "r_intensity", "1" );
 	}
 
-#ifdef __linux__
+#if defined( __linux__ ) || defined( __OpenBSD__ )
 	if ( r_gamma->value != -1 ) {
 #endif
 
@@ -2469,7 +2469,7 @@ void R_SetColorMappings( void ) {
 	}
 	g = r_gamma->value;
 
-#ifdef __linux__
+#if defined ( __linux__ ) || defined( __OpenBSD__ )
 } else {
 	g = 1.0f;
 }

@@ -1266,7 +1266,7 @@ void Com_GetHunkInfo( int* hunkused, int* hunkexpected );
 #define SYS_DLLNAME_UI_SHIFT 5
 #define SYS_DLLNAME_UI "zndrud}=;3iqq"
 
-#elif defined( __linux__ )
+#elif defined( __linux__ ) || defined ( __OpenBSD__ )
 
 // qagame.mp.i386.so
 #define SYS_DLLNAME_QAGAME_SHIFT 6

@@ -592,7 +592,7 @@ float Q_fabs( float f ) {
 	return *(float*)&tmp;
 }
 
-#if id386 && !( ( defined __linux__ || defined __FreeBSD__ || defined __GNUC__ ) && ( defined __i386__ ) ) // rb010123
+#if id386 && !( ( defined __linux__ || defined __FreeBSD__ || defined __OpenBSD__ || defined __GNUC__ ) && ( defined __i386__ ) ) // rb010123
 long myftol( float f ) {
 	static int tmp;
 	__asm fld f

@@ -40,6 +40,9 @@ If you have questions concerning this license or the applicable additional terms
 #ifdef __FreeBSD__ // rb0101023 - added
 #include <sys/soundcard.h>
 #endif
+#ifdef __OpenBSD__
+#include <soundcard.h>
+#endif
 #include <stdio.h>
 
 #include "../game/q_shared.h"
@@ -65,7 +68,7 @@ void Snd_Memset( void* dest, const int val, const size_t count ) {
 	int i, iterate;
 
 	if ( !use_custom_memset ) {
-		Com_Memset( dest,val,count );
+		memset( dest,val,count );
 		return;
 	}
 	iterate = count / sizeof( int );

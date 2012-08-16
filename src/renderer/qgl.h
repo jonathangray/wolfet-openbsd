@@ -69,7 +69,7 @@ If you have questions concerning this license or the applicable additional terms
 #undef GL_ARB_multitexture
 #include "glext.h"
 
-#elif defined( __FreeBSD__ ) // rb010123
+#elif defined( __FreeBSD__ ) || defined( __OpenBSD__ ) // rb010123
 
 #include <GL/gl.h>
 #include <GL/glx.h>
@@ -212,7 +212,7 @@ extern void ( APIENTRY * qglPNTrianglesfATI )( GLenum pname, GLfloat param );
 //===========================================================================
 
 // non-windows systems will just redefine qgl* to gl*
-#if !defined( _WIN32 ) && !defined( MACOS_X ) && !defined( __linux__ ) && !defined( __FreeBSD__ ) // rb010123
+#if !defined( _WIN32 ) && !defined( MACOS_X ) && !defined( __linux__ ) && !defined( __FreeBSD__ ) && !defined(__OpenBSD__) // rb010123
 
 #include "qgl_linked.h"
 
@@ -599,7 +599,7 @@ extern BOOL ( WINAPI * qwglSwapIntervalEXT )( int interval );
 
 #endif  // _WIN32
 
-#if ( ( defined __linux__ )  || ( defined __FreeBSD__ ) ) // rb010123
+#if ( ( defined __linux__ )  || ( defined __FreeBSD__ ) || ( defined __OpenBSD__ ) ) // rb010123
 
 //FX Mesa Functions
 // bk001129 - from cvs1.17 (mkv)
@@ -625,7 +625,7 @@ extern int ( *qglXGetVideoSyncSGI )( unsigned int *count );
 extern int ( *qglXWaitVideoSyncSGI )( int divisor, int remainder, unsigned int *count );
 extern const char * ( *qglXQueryExtensionsString )( Display * dpy, int screen );
 
-#endif // __linux__ || __FreeBSD__ // rb010123
+#endif // __linux__ || __FreeBSD__ || __OpenBSD__ // rb010123
 
 #endif  // _WIN32 && __linux__
 

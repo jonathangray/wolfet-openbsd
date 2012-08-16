@@ -799,7 +799,7 @@ void GL_SetDefaultState( void ) {
 //----(SA)	end
 }
 
-#ifdef __linux__
+#if defined( __linux__ ) || defined( __OpenBSD__ )
 extern const char *glx_extensions_string;
 #endif
 
@@ -825,7 +825,7 @@ void GfxInfo_f( void ) {
 	ri.Printf( PRINT_ALL, "GL_RENDERER: %s\n", glConfig.renderer_string );
 	ri.Printf( PRINT_ALL, "GL_VERSION: %s\n", glConfig.version_string );
 	ri.Printf( PRINT_ALL, "GL_EXTENSIONS: %s\n", glConfig.extensions_string );
-#ifdef __linux__
+#if defined( __linux__ ) || defined( __OpenBSD__ )
 	ri.Printf( PRINT_ALL, "GLX_EXTENSIONS: %s\n", glx_extensions_string );
 #endif
 	ri.Printf( PRINT_ALL, "GL_MAX_TEXTURE_SIZE: %d\n", glConfig.maxTextureSize );
@@ -933,7 +933,7 @@ void R_Register( void ) {
 	r_nv_fogdist_mode                   = ri.Cvar_Get( "r_nv_fogdist_mode", "GL_EYE_RADIAL_NV", CVAR_ARCHIVE | CVAR_UNSAFE );  // default to 'looking good'
 //----(SA)	end
 
-#ifdef __linux__ // broken on linux
+#if defined( __linux__ ) || defined( __OpenBSD__ ) // broken on linux
 	r_ext_texture_env_add = ri.Cvar_Get( "r_ext_texture_env_add", "0", CVAR_ARCHIVE | CVAR_LATCH | CVAR_UNSAFE );
 #else
 	r_ext_texture_env_add = ri.Cvar_Get( "r_ext_texture_env_add", "1", CVAR_ARCHIVE | CVAR_LATCH | CVAR_UNSAFE );
@@ -950,7 +950,7 @@ void R_Register( void ) {
 	r_texturebits = ri.Cvar_Get( "r_texturebits", "0", CVAR_ARCHIVE | CVAR_LATCH | CVAR_UNSAFE );
 	r_colorbits = ri.Cvar_Get( "r_colorbits", "0", CVAR_ARCHIVE | CVAR_LATCH | CVAR_UNSAFE );
 	r_stereo = ri.Cvar_Get( "r_stereo", "0", CVAR_ARCHIVE | CVAR_LATCH | CVAR_UNSAFE );
-#ifdef __linux__
+#if defined( __linux__ ) || defined( __OpenBSD__ )
 	r_stencilbits = ri.Cvar_Get( "r_stencilbits", "0", CVAR_ARCHIVE | CVAR_LATCH | CVAR_UNSAFE );
 #else
 	r_stencilbits = ri.Cvar_Get( "r_stencilbits", "0", CVAR_ARCHIVE | CVAR_LATCH | CVAR_UNSAFE );
